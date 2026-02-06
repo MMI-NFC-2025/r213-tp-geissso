@@ -6,11 +6,9 @@ import PbImage from "../../components/PbImage.astro"
 const offres = await getOffres();
 ---
 	<Layout titre="Accueil">
-    <h1>Offres</h1> 
 	<button id="favori-button" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded">Afficher les favoris</button>
 	<div class="grid gap-3">
     {offres.map((offre) => (
-    <PbImage record={offre} recordImage={offre.images[0] } />
     <Card offre={offre} />
   ))}
 </div>
