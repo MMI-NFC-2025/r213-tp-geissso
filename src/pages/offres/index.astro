@@ -1,0 +1,39 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import Card from "../../components/Card.astro";
+import { getOffres } from '../../backend.mjs';
+import PbImage from "../../components/PbImage.astro"
+const offres = await getOffres();
+---
+	<Layout titre="Accueil">
+    <h1>Offres</h1> 
+	<button id="favori-button" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded">Afficher les favoris</button>
+	<div class="grid gap-3">
+    {offres.map((offre) => (
+    <PbImage record={offre} recordImage={offre.images[0] } />
+    <Card offre={offre} />
+  ))}
+</div>
+<script>
+  const button = document.getElementById('favori-button');
+  let showOnlyFavorites = false;
+
+  button?.addEventListener('click', () => {
+    showOnlyFavorites = !showOnlyFavorites;
+    const offres : NodeListOf<HTMLElement> = document.querySelectorAll('.offre');
+
+    offres.forEach(offre => {
+      const isFavori = offre.dataset.favori === 'true';
+
+      if (showOnlyFavorites) {
+        offre.style.display = isFavori ? 'block' : 'none';
+        button.textContent = 'Afficher tout';
+      } else {
+        offre.style.display = 'block';
+        button.textContent = 'Afficher les favoris';
+      }
+    });
+  });
+</script>
+</Layout>
+	  
