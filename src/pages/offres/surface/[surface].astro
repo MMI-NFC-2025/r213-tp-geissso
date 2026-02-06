@@ -1,0 +1,50 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import Card from "../../../components/Card.astro";
+import { getOffres } from '../../../backend.mjs';
+
+const { surface } = Astro.params;
+const surfaceMin = parseInt(surface);
+
+const toutesLesOffres = await getOffres();
+const offres = toutesLesOffres.filter(offre => offre.surface > surfaceMin);
+---
+
+<Layout titre={`Maisons de plus de ${surface}m²`}>
+  <div class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <button onclick="history.back()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">← Retour</button>
+      
+      <div class="mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-2">Maisons de plus de {surface}m²</h1>
+        <p class="text-gray-600">
+          {offres.length === 0 ? (
+            `Aucune maison trouvée avec une surface supérieure à ${surface}m².`
+          ) : (
+            `${offres.length} propriété${offres.length > 1 ? 's' : ''} disponible${offres.length > 1 ? 's' : ''}`
+          )}
+        </p>
+      </div>
+      
+      {offres.length === 0 ? (
+        <div class="bg-white rounded-lg shadow-md p-8 text-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Aucune propriété trouvée</h3>
+          <p class="text-gray-600 mb-4">Essayez avec une surface inférieure ou explorez toutes nos offres.</p>
+          <a href="/offres" class="inline-block bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition">
+            Voir toutes les offres
+          </a>
+        </div>
+      ) : (
+        <div class="grid gap-6">
+          {offres.map((offre) => (
+            <Card offre={offre} />
+          ))}
+        </div>
+      )}
+    
+    </div>
+  </div>
+</Layout>
