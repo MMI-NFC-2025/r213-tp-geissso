@@ -33,13 +33,26 @@ export async function addOffre(house) {
         await db.collection('maison').create(house);
         return {
             success: true,
-            message: 'Offre ajoutée avec succès'
+            message: "L'offre a été ajoutée avec succès."
         };
     } catch (error) {
         console.log('Une erreur est survenue en ajoutant la maison', error);
         return {
             success: false,
-            message: 'Une erreur est survenue en ajoutant la maison'
+            message: "Une erreur est survenue lors de l'ajout de l'offre : " + error
         };
+    }
+}
+
+export async function filterByPrix(minPrix, maxPrix) {
+    try {
+        const data = await db.collection('maison').getFullList({
+            filter: `prix >= ${minPrix} && prix <= ${maxPrix}`,
+            sort: '-created',
+        });
+        return data;
+    } catch (error) {
+        console.log('Une erreur est survenue en filtrant les maisons', error);
+        return [];
     }
 }
