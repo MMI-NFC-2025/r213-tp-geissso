@@ -82,10 +82,14 @@ if (Astro.request.method === "POST") {
       const isFavori = offre.dataset.favori === 'true';
 
       if (showOnlyFavorites) {
-        offre.style.display = isFavori ? 'block' : 'none';
+        if (isFavori) {
+          offre.classList.remove('hidden');
+        } else {
+          offre.classList.add('hidden');
+        }
         button.textContent = 'Afficher tout';
       } else {
-        offre.style.display = 'block';
+        offre.classList.remove('hidden');
         button.textContent = 'Afficher les favoris';
       }
     });

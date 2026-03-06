@@ -1,0 +1,32 @@
+---
+import Layout  from '../../layouts/Layout.astro';
+import { getAgent } from '../../backend.mjs';
+import { OffresByAgent } from '../../backend.mjs';
+const { id } = Astro.params;
+const Agent = await getAgent(id);
+const offres = await OffresByAgent(id);
+---
+
+<Layout titre={`${Agent.nom} ${Agent.prenom}`}>
+  <div class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+      <button onclick="history.back()" class="mb-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">← Retour</button>
+      
+      <div class="flex flex-wrap -mx-4">
+        <div class="w-full md:w-1/2 px-4">
+          <h2 class="text-3xl font-bold mb-2">{Agent.nom} {Agent.prenom}</h2>
+          <p class="text-gray-600 mb-4">{Agent.email}</p>
+          <p class="text-gray-800">Offres que couvrent notre agent:</p>
+          <div class="mt-4 space-y-4">
+            {offres.map(offre => (
+              <div class="bg-white rounded-lg shadow-md p-4">
+                <h3 class="text-xl font-semibold">{offre.titre}</h3>
+                <p class="text-gray-600">{offre.description}</p>
+              </div>
+            ))}
+
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>

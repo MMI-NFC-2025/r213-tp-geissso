@@ -38,9 +38,9 @@
     window.onscroll = function () {
         let currentScrollPos = window.pageYOffset;
         if (prevScrollPos > currentScrollPos) {
-            navbar.style.transform = "translateY(0)";
+            navbar?.classList.remove('-translate-y-full');
         } else {
-            navbar.style.transform = "translateY(-100%)";
+            navbar?.classList.add('-translate-y-full');
         }
         prevScrollPos = currentScrollPos;
     };

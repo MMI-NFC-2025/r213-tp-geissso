@@ -1,0 +1,11 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { AllAgents } from "../../backend.mjs";
+import CardAgent from "../../components/CardAgent.astro";
+
+const agents = await AllAgents();
+---
+
+<Layout titre="Nos Agents">
+    <CardAgent agents={agents} />
+</Layout>

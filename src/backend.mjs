@@ -56,3 +56,42 @@ export async function filterByPrix(minPrix, maxPrix) {
         return [];
     }
 }
+
+export async function setFavori(house) {
+    await db.collection('maison').update(house.id, {favori: !house.favori});
+}
+
+export async function AllAgents() {
+    try {
+        let data = await db.collection('Agent').getFullList({
+            sort: '-created',
+        });
+        return data;    
+    } catch (error) {
+        console.log('Une erreur est survenue en lisant la liste des agents', error);
+        return [];
+    }
+}
+
+export async function getAgent(id) {
+    try {
+        let data = await db.collection('Agent').getOne(id);
+        return data;
+    } catch (error) {  
+        console.log('Une erreur est survenue en lisant l\'agent', error);
+        return null;
+    }
+}
+
+export async function OffresByAgent(agentId) {
+    try {
+        let data = await db.collection('maison').getFullList({
+            filter: `agent = "${agentId}"`,
+            sort: '-created',
+        });
+        return data;
+    } catch (error) {
+        console.log('Une erreur est survenue en lisant les maisons de l\'agent', error);
+        return [];
+    }
+}
